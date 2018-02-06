@@ -3,9 +3,9 @@ require 'spec_helper'
 describe SecretSanta do
   subject { described_class.new list }
 
-  let(:list) { [couple1, 'Carol', 'Dave', couple2, 'Ian', 'Jim'] }
-  let(:couple1) { %w(Alice Bob) }
-  let(:couple2) { %w(Ethan Fran) }
+  let(:list) { [group1, 'Carol', 'Dave', group2, 'Ian', 'Jim'] }
+  let(:group1) { %w(Alice Bob) }
+  let(:group2) { %w(Ethan Fran Greg) }
 
   describe '#assignments', assignments: true do
     context 'when there are not enough people to play SecretSanta' do
@@ -51,11 +51,22 @@ describe SecretSanta do
     context 'when some of the players are designated as a couple' do
       let(:assignments) { subject.assignments }
 
-      it 'does not assign members of a couple to each other if it can be avoided' do
+      it 'does not assign members of a couple to each other' do
         expect(assignments['Alice']).not_to eq 'Bob'
         expect(assignments['Bob']).not_to eq 'Alice'
+      end
+    end
+
+    context 'when some of the players are designated as a large group' do
+      let(:assignments) { subject.assignments }
+
+      it 'does not assign members of a group to each other' do
         expect(assignments['Ethan']).not_to eq 'Fran'
+        expect(assignments['Ethan']).not_to eq 'Greg'
         expect(assignments['Fran']).not_to eq 'Ethan'
+        expect(assignments['Fran']).not_to eq 'Greg'
+        expect(assignments['Greg']).not_to eq 'Ethan'
+        expect(assignments['Greg']).not_to eq 'Fran'
       end
     end
   end

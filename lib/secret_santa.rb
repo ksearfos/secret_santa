@@ -1,3 +1,4 @@
+require_relative 'secret_santa/groups'
 require_relative 'secret_santa/participants'
 
 class SecretSanta

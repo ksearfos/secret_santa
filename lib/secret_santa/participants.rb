@@ -1,18 +1,16 @@
 class SecretSanta
   class Participants
-    attr_reader :all, :couples
+    attr_reader :all, :groups
 
     def initialize(people)
       @all = people.flatten
-      @couples = people.select do |person_or_pair|
-        person_or_pair.to_s != person_or_pair
-      end
+      @groups = SecretSanta::Groups.new(people)
     end
 
     def reorder!
       all.shuffle!
 
-      while big_enough_to_avoid_couples? && has_couples?
+      while has_groups? && big_enough_to_avoid_groups?
         all.shuffle!
       end
     end
@@ -26,23 +24,18 @@ class SecretSanta
 
     private
 
-    def has_couples?
-      return false if couples.empty?
+    def has_groups?
+      return false if groups.empty?
 
       each_group_of_two do |person1, person2|
-        return true if couples.include?([person1, person2])||
-          couples.include?([person2, person1])
+        return true if groups.same?(person1, person2)
       end
 
       false
     end
 
-    # If there are 2 people, and they are a couple, there is no way to
-    #  reorder such that they are not assigned to each other
-    # If there are 3 people, and two are a couple, there is no way to
-    #  reorder such that one member of the couple is not assigned to the other
-    def big_enough_to_avoid_couples?
-      all.size >=4
+    def big_enough_to_avoid_groups?
+      all.size >= groups.largest.size * 2
     end
   end
 end
