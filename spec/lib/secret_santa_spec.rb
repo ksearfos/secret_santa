@@ -12,7 +12,7 @@ describe SecretSanta do
       let(:list) { [] }
 
       specify do
-        expect(subject.assignments).to eq({})
+        expect(described_class.new(list).assignments).to be_empty
       end
     end
 
