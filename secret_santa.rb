@@ -3,12 +3,10 @@
 require_relative "lib/secret_santa"
 
 PEOPLE = [
-  %w(Kelli Terri Bryan),
-  %w(Andrea Eric),
-  %w(Liz Dave),
-  %w(Mike Linda),
-  %w(Ben Elaine),
+  %w(Kelli Terri Bryan Andrea Eric),
+  %w(Liz Dave Mike Linda Ben Emily),
   'Grandma',
+  "Kelli's +1",
 ]
 
 SecretSanta.new(PEOPLE).assignments.each do |santa,assignee|
